@@ -1,0 +1,12 @@
+{
+  "name": "feishu-gpu-board",
+  "description": "Live GPU free/busy board in Feishu / Lark Base, with an agent skill that sets it up end to end.",
+  "owner": { "name": "Aiden Ma" },
+  "plugins": [
+    {
+      "name": "feishu-gpu-board",
+      "source": "./",
+      "description": "Skill: set up, extend, check and repair a Feishu / Lark GPU availability board over SSH."
+    }
+  ]
+}

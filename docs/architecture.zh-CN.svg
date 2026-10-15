@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+    </marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f6feb"/>
+    </marker>
+    <marker id="arrO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#bc4c00"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="760" fill="#ffffff"/>
+
+  <!-- ===== GPU boxes ===== -->
+  <rect x="58" y="44" width="560" height="436" rx="14" fill="#eaf5ee" stroke="#9cc9ad" stroke-dasharray="5 4"/>
+  <rect x="40" y="30" width="560" height="436" rx="14" fill="#f3faf5" stroke="#4a9d6a" stroke-width="1.5"/>
+  <text x="60" y="58" font-size="16" font-weight="700" fill="#1a5c35">GPU 机器</text>
+  <text x="140" y="58" font-size="13" fill="#3f6b50">每台物理机或 Kubernetes 容器各一套 · × N 台</text>
+
+  <!-- sources -->
+  <g font-size="12.5" fill="#24292f" text-anchor="middle">
+    <rect x="62" y="78" width="160" height="36" rx="8" fill="#ffffff" stroke="#b7d7c3"/>
+    <text x="142" y="101">nvidia-smi（只读）</text>
+    <rect x="234" y="78" width="160" height="36" rx="8" fill="#ffffff" stroke="#b7d7c3"/>
+    <text x="314" y="101">/proc/&lt;pid&gt; 回溯父进程</text>
+    <rect x="406" y="78" width="174" height="36" rx="8" fill="#ffffff" stroke="#b7d7c3"/>
+    <text x="493" y="101">/proc · ps · docker ps</text>
+  </g>
+
+  <!-- agents -->
+  <rect x="62" y="150" width="332" height="70" rx="10" fill="#ffffff" stroke="#4a9d6a" stroke-width="1.6"/>
+  <text x="80" y="176" font-size="15" font-weight="700" fill="#1f2328" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">node_agent.py</text>
+  <text x="80" y="196" font-size="12" fill="#57606a">每张卡：空闲/占用、显存、利用率、进程，</text>
+  <text x="80" y="211" font-size="12" fill="#57606a">以及服务模型 + ip:端口（vLLM、SGLang…）</text>
+
+  <rect x="406" y="150" width="174" height="70" rx="10" fill="#ffffff" stroke="#4a9d6a" stroke-width="1.6"/>
+  <text x="422" y="176" font-size="15" font-weight="700" fill="#1f2328" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">cpu_agent.py</text>
+  <text x="422" y="196" font-size="12" fill="#57606a">负载 · 内存 · 磁盘 · IO</text>
+  <text x="422" y="211" font-size="12" fill="#57606a">任务进程</text>
+
+  <line x1="142" y1="114" x2="180" y2="148" stroke="#57606a" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="314" y1="114" x2="290" y2="148" stroke="#57606a" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="493" y1="114" x2="493" y2="148" stroke="#57606a" stroke-width="1.3" marker-end="url(#arr)"/>
+
+  <!-- snapshot files -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#24292f">
+    <rect x="62" y="252" width="332" height="34" rx="6" fill="#fffdf5" stroke="#c9b458" stroke-dasharray="4 3"/>
+    <text x="80" y="274">nodes/&lt;label&gt;.json</text>
+    <rect x="406" y="252" width="174" height="34" rx="6" fill="#fffdf5" stroke="#c9b458" stroke-dasharray="4 3"/>
+    <text x="414" y="274" font-size="11.5">cpu_snaps/&lt;label&gt;.json</text>
+  </g>
+  <text x="252" y="274" font-size="11.5" fill="#8a6d00">原子写入 · 每 60 秒</text>
+  <line x1="228" y1="220" x2="228" y2="250" stroke="#57606a" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="493" y1="220" x2="493" y2="250" stroke="#57606a" stroke-width="1.3" marker-end="url(#arr)"/>
+
+  <!-- master -->
+  <rect x="62" y="322" width="518" height="84" rx="10" fill="#ffffff" stroke="#bc4c00" stroke-width="2"/>
+  <text x="80" y="349" font-size="15" font-weight="700" fill="#1f2328" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">master.py</text>
+  <text x="170" y="349" font-size="12" fill="#bc4c00" font-weight="600">唯一持有应用密钥的进程</text>
+  <text x="80" y="370" font-size="12" fill="#57606a">读表 → 判定状态（Busy &gt; Reserved &gt; Free；快照过期 → Stale）</text>
+  <text x="80" y="388" font-size="12" fill="#57606a">→ 每轮一次 batch_update · v1 额度用完 → 降级到 base v3 API</text>
+  <line x1="228" y1="286" x2="228" y2="320" stroke="#57606a" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="493" y1="286" x2="493" y2="320" stroke="#57606a" stroke-width="1.3" marker-end="url(#arr)"/>
+
+  <text x="62" y="436" font-size="12" fill="#1a5c35"><tspan font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">supervise.sh</tspan> 每个组件一个重启循环 —— 不需要 cron 或 systemd</text>
+  <text x="62" y="454" font-size="12" fill="#3f6b50">文件都在 ~/gpu-board · 密钥只在 master.env（0600）· 不放整个仓库</text>
+
+  <!-- ===== Feishu Base ===== -->
+  <rect x="720" y="30" width="440" height="436" rx="14" fill="#f2f6ff" stroke="#1f6feb" stroke-width="1.5"/>
+  <text x="740" y="58" font-size="16" font-weight="700" fill="#0b3d91">飞书 / Lark 多维表格</text>
+  <text x="918" y="58" font-size="13" fill="#3b5998">就是你现有的飞书</text>
+
+  <rect x="740" y="78" width="400" height="74" rx="10" fill="#ffffff" stroke="#8fb2f3"/>
+  <text x="756" y="102" font-size="14" font-weight="700" fill="#1f2328">每种 GPU 一张表</text>
+  <text x="880" y="102" font-size="12" fill="#57606a">如 H200 · B200</text>
+  <text x="756" y="122" font-size="12" fill="#57606a">节点 · 卡号 · 状态 · 显存 · 利用率 · 占用进程</text>
+  <text x="756" y="140" font-size="12" fill="#57606a">服务模型 · 服务端点 · 更新时间 · 负责人 · 备注 · 预定…</text>
+
+  <rect x="740" y="164" width="400" height="56" rx="10" fill="#ffffff" stroke="#8fb2f3"/>
+  <text x="756" y="188" font-size="14" font-weight="700" fill="#1f2328">CPU 表</text>
+  <text x="816" y="188" font-size="12" fill="#57606a">每台机器一行（可选）</text>
+  <text x="756" y="207" font-size="12" fill="#57606a">主机 · 状态 · 负载 · 内存 · 磁盘 · IO · 进程</text>
+
+  <rect x="740" y="232" width="400" height="56" rx="10" fill="#ffffff" stroke="#8fb2f3"/>
+  <text x="756" y="256" font-size="14" font-weight="700" fill="#1f2328">视图和仪表盘</text>
+  <text x="756" y="275" font-size="12" fill="#57606a">空闲 · 空转占用 · 离线 · 图表</text>
+
+  <rect x="740" y="300" width="400" height="84" rx="10" fill="#e7f0ff" stroke="#1f6feb" stroke-dasharray="5 4"/>
+  <text x="756" y="326" font-size="14" font-weight="700" fill="#0b3d91">你的团队，在飞书里</text>
+  <text x="756" y="346" font-size="12" fill="#3b5998">一眼看到哪些卡空着、谁在哪儿跑什么服务；</text>
+  <text x="756" y="364" font-size="12" fill="#3b5998">自己填 负责人 / 备注 / 预定人 —— master 从不覆盖</text>
+
+  <text x="740" y="412" font-size="12" fill="#0b3d91" font-weight="600">多台机器写同一张表：</text>
+  <text x="740" y="430" font-size="12" fill="#3b5998">每个 master 只写自己的行；别的机器的行</text>
+  <text x="740" y="448" font-size="12" fill="#3b5998">超过 180 秒没人更新就标成 Stale</text>
+
+  <!-- master -> Base -->
+  <path d="M580,350 C650,350 660,115 736,115" fill="none" stroke="#1f6feb" stroke-width="2.2" marker-end="url(#arrB)"/>
+  <path d="M580,380 C660,380 670,192 736,192" fill="none" stroke="#1f6feb" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrB)"/>
+  <rect x="604" y="236" width="104" height="46" rx="6" fill="#ffffff" stroke="#c8d8f8"/>
+  <text x="656" y="254" font-size="11.5" fill="#0b3d91" text-anchor="middle">HTTPS，每 60 秒</text>
+  <text x="656" y="271" font-size="11.5" fill="#0b3d91" text-anchor="middle">1 次读 + 1 次写</text>
+
+  <!-- ===== Ops machine ===== -->
+  <rect x="40" y="520" width="1120" height="214" rx="14" fill="#f6f7f9" stroke="#8c959f" stroke-width="1.5"/>
+  <text x="60" y="548" font-size="16" font-weight="700" fill="#24292f">你的笔记本 / 任意运维机</text>
+  <text x="268" y="548" font-size="13" fill="#57606a">能 ssh 到 GPU 机器就行 —— 除了可选的看门狗，上面不用常驻任何东西</text>
+
+  <rect x="62" y="566" width="340" height="146" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="80" y="592" font-size="15" font-weight="700" fill="#1f2328" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">deploy/deploy.sh</text>
+  <g font-size="12" fill="#57606a">
+    <text x="80" y="614"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#24292f">setup</tspan><tspan x="158">在多维表格里建表和视图</tspan></text>
+    <text x="80" y="632"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#24292f">preflight</tspan><tspan x="158">ssh · GPU · python · 能否连飞书</tspan></text>
+    <text x="80" y="650"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#24292f">&lt;target&gt;</tspan><tspan x="158">发送 3 个 .py + env + supervise.sh 并启动</tspan></text>
+    <text x="80" y="668"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#24292f">status</tspan><tspan x="158">check · stop · uninstall</tspan></text>
+  </g>
+  <text x="80" y="694" font-size="11.5" fill="#bc4c00">密钥走 ssh 标准输入，从不上命令行</text>
+
+  <rect x="430" y="566" width="340" height="146" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="448" y="592" font-size="15" font-weight="700" fill="#1f2328" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">deploy/watchdog.sh</text>
+  <text x="448" y="614" font-size="12" fill="#57606a">每 5 分钟（macOS 用 launchd，Linux 用 cron）</text>
+  <g font-size="12" fill="#57606a">
+    <text x="448" y="632"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#24292f">healthy</tspan><tspan x="540">→ 不动</tspan></text>
+    <text x="448" y="650"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#24292f">unreachable</tspan><tspan x="540">→ 不动（离线 / 机器没了）</tspan></text>
+    <text x="448" y="668"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#24292f">down</tspan><tspan x="540">→ 重新部署（容器重启了）</tspan></text>
+  </g>
+  <text x="448" y="694" font-size="11.5" fill="#57606a">每台每 15 分钟最多一次 · 弹通知</text>
+
+  <rect x="798" y="566" width="340" height="146" rx="10" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="816" y="592" font-size="15" font-weight="700" fill="#1f2328" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">deploy/targets.conf</text>
+  <text x="816" y="614" font-size="12" fill="#57606a">App ID · Base token · 表 id</text>
+  <text x="816" y="632" font-size="12" fill="#57606a">每台机器一行：</text>
+  <text x="816" y="652" font-size="11.5" fill="#24292f" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">target b200-a root@10.0.0.12 b200-a tbl…</text>
+  <text x="816" y="676" font-size="12" fill="#57606a">密钥文件（0600，不在仓库里）：</text>
+  <text x="816" y="694" font-size="11.5" fill="#24292f" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">FEISHU_APP_SECRET=…</text>
+
+  <line x1="430" y1="668" x2="406" y2="668" stroke="#57606a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="798" y1="604" x2="774" y2="604" stroke="#57606a" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+
+  <!-- deploy -> box -->
+  <path d="M232,566 L232,470" fill="none" stroke="#bc4c00" stroke-width="2" marker-end="url(#arrO)"/>
+  <rect x="242" y="492" width="128" height="22" rx="5" fill="#ffffff" stroke="#f0c8a8"/>
+  <text x="306" y="507" font-size="11.5" fill="#bc4c00" text-anchor="middle">ssh (BatchMode)</text>
+</svg>

@@ -1,0 +1,10 @@
+{
+  "name": "feishu-gpu-board",
+  "version": "0.1.0",
+  "description": "Skill: set up, extend, check and repair a Feishu / Lark GPU availability board over SSH.",
+  "author": { "name": "Aiden Ma" },
+  "homepage": "https://github.com/mjykxz17/feishu-gpu-board",
+  "repository": "https://github.com/mjykxz17/feishu-gpu-board",
+  "license": "MIT",
+  "keywords": ["gpu", "feishu", "lark", "nvidia-smi", "dashboard", "vllm", "sglang"]
+}

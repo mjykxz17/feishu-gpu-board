@@ -1,0 +1,14 @@
+# your deployment config and anything secret - never commit
+deploy/targets.conf
+*.conf.local
+secret
+*.secret
+.env
+.env.*
+state/
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
